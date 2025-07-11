@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:woow_social/features/home/home_screen.dart';
+import 'package:woow_social/core/config/shared_preferences_helper.dart';
+import 'package:woow_social/core/constants/prefs_contants.dart';
+import 'package:woow_social/routes/route_names.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -9,7 +11,8 @@ class SplashScreen extends StatefulWidget {
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;
 
@@ -30,9 +33,16 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
 
     _animationController.forward();
 
-    // Navigate to home after animation completes
     Future.delayed(const Duration(seconds: 3), () {
-      Get.offAll(() => const HomeScreen(), transition: Transition.fade);
+      final isFirstTime = SharedPreferencesHelper.getBool(
+          PrefsConstants.isFirstTime,
+          defaultValue: true);
+      if (isFirstTime) {
+        SharedPreferencesHelper.setBool(PrefsConstants.isFirstTime, false);
+        Get.offAllNamed(RouteNames.onBoardUser);
+      } else {
+        Get.offAllNamed(RouteNames.mainHome);
+      }
     });
   }
 

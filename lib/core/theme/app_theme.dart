@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:woow_social/core/constants/color_constants.dart';
 
 class AppTheme {
-  static const Color primaryColor = Color(0xFF000000);
   static const Color secondaryColor = Color(0xFFFFFFFF);
   static const Color accentColor = Color(0xFFFE2C55);
   static const Color textPrimary = Color(0xFF161823);
@@ -12,22 +12,24 @@ class AppTheme {
 
   static ThemeData get lightTheme {
     return ThemeData(
-      primaryColor: primaryColor,
+      primaryColor: ColorConstants.primaryColor,
       colorScheme: const ColorScheme.light(
-        primary: primaryColor,
-        secondary: accentColor,
-        background: background,
-        surface: surface,
-        onPrimary: secondaryColor,
-        onSecondary: secondaryColor,
+        primary: ColorConstants.primaryColor,
+        secondary: ColorConstants.secondaryColor,
+        background: Colors.white,
+        surface: Colors.white,
+        onPrimary: Colors.white,
+        onSecondary: ColorConstants.secondaryColor,
         onBackground: textPrimary,
         onSurface: textPrimary,
       ),
       scaffoldBackgroundColor: background,
       textTheme: GoogleFonts.robotoTextTheme(
         const TextTheme(
-          displayLarge: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: textPrimary),
-          displayMedium: TextStyle(fontSize: 24, fontWeight: FontWeight.w600, color: textPrimary),
+          displayLarge: TextStyle(
+              fontSize: 28, fontWeight: FontWeight.bold, color: textPrimary),
+          displayMedium: TextStyle(
+              fontSize: 24, fontWeight: FontWeight.w600, color: textPrimary),
           bodyLarge: TextStyle(fontSize: 16, color: textPrimary),
           bodyMedium: TextStyle(fontSize: 14, color: textPrimary),
           bodySmall: TextStyle(fontSize: 12, color: textSecondary),

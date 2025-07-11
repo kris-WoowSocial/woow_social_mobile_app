@@ -32,12 +32,22 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.2
   get: ^4.6.6
-  google_fonts: ^6.1.0
+  google_fonts: 4.0.4
   cached_network_image: ^3.3.1
   video_player: ^2.8.1
   chewie: ^1.7.4
+  better_player_plus:
   shimmer: ^3.0.0
-  flutter_svg: ^2.0.10+1
+  flutter_svg:
+  flutter_screenutil: ^5.9.3
+  firebase_core: ^2.12.0
+  firebase_crashlytics: ^3.4.18
+  shared_preferences: ^2.0.15
+  firebase_analytics: ^10.8.9
+  glass: ^2.0.0+2
+  get_it: ^7.2.0
+
+
 
 dev_dependencies:
   flutter_test:
@@ -60,6 +70,10 @@ flutter:
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/svg/
 
   # To add assets to your application, add an assets section, like this:
   # assets:

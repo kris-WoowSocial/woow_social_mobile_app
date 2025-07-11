@@ -1,4 +1,4 @@
-package com.example.woow_social
+package com.woow.woow
 
 import io.flutter.embedding.android.FlutterActivity
 

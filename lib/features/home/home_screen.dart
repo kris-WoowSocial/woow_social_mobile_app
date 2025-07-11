@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:woow_social/core/theme/app_theme.dart';
+import 'package:woow_social/features/home/components/home_tabs.dart';
+import 'package:woow_social/features/home/components/video_player_view.dart';
+import 'package:woow_social/features/home/tabs/followings/home_tab_following.dart';
+import 'package:woow_social/features/home/tabs/foryou/home_tab_foryou.dart';
+import 'package:woow_social/features/home/tabs/friends/home_tab_friends.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -9,73 +14,53 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
-  final PageController _pageController = PageController();
+  PageController _pageController = PageController(initialPage: 2);
 
-  final List<Widget> _screens = [
-    const Center(child: Text('Home')),
-    const Center(child: Text('Discover')),
-    const Center(child: Text('Add')),
-    const Center(child: Text('Inbox')),
-    const Center(child: Text('Profile')),
-  ];
+  @override
+  void initState() {
+    super.initState();
+    _pageController.addListener(_onPageChanged);
+  }
 
   @override
   void dispose() {
+    _pageController.removeListener(_onPageChanged);
     _pageController.dispose();
     super.dispose();
   }
 
+  void _onPageChanged() {
+    setState(() {});
+  }
+
+  var arrTabs = [
+    HomeTabFollowing(),
+    HomeTabFriends(),
+    HomeTabForYou(),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: PageView(
-        controller: _pageController,
-        physics: const NeverScrollableScrollPhysics(),
-        children: _screens,
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (index) {
-          setState(() {
-            _currentIndex = index;
-            _pageController.jumpToPage(index);
-          });
-        },
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.black,
-        selectedItemColor: AppTheme.accentColor,
-        unselectedItemColor: Colors.grey[600],
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: PageView.builder(
+            scrollDirection: Axis.horizontal,
+            controller: _pageController,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: arrTabs.length,
+            itemBuilder: (context, index) {
+              return arrTabs[index];
+            },
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Discover',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle_outline, size: 32),
-            label: 'Add',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.inbox),
-            label: 'Inbox',
-          ),
-          BottomNavigationBarItem(
-            icon: CircleAvatar(
-              radius: 14,
-              backgroundColor: Colors.grey,
-              // Replace with user's profile image
-              child: Icon(Icons.person, size: 16, color: Colors.white),
-            ),
-            label: 'Profile',
-          ),
-        ],
-      ),
+        ),
+        Positioned(
+          left: 16,
+          right: 16,
+          top: 50,
+          child: HomeTabs(selectedIndex: _pageController.page?.toInt() ?? 2),
+        ),
+      ],
     );
   }
 }

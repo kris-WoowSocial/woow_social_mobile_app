@@ -1,11 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_it/get_it.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:woow_social/core/theme/app_theme.dart';
-import 'package:woow_social/features/splash/splash_screen.dart';
+import 'package:woow_social/routes/register_routes.dart';
+import 'package:woow_social/routes/route_names.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await setupDepedencies();
+
   runApp(const WoowSocialApp());
+}
+
+final serviceLocatorInstance = GetIt.instance;
+
+Future setupDepedencies() async {
+  if (!serviceLocatorInstance.isRegistered<SharedPreferences>()) {
+    final sharedPreferences = await SharedPreferences.getInstance();
+    serviceLocatorInstance
+        .registerSingleton<SharedPreferences>(sharedPreferences);
+  }
 }
 
 class WoowSocialApp extends StatelessWidget {
@@ -17,7 +32,8 @@ class WoowSocialApp extends StatelessWidget {
       title: 'Woow Social',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const SplashScreen(),
+      initialRoute: RouteNames.splashScreen,
+      getPages: allPages(),
       defaultTransition: Transition.fade,
     );
   }
