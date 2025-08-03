@@ -5,8 +5,17 @@ import 'package:woow_social/core/constants/svg_constants.dart';
 import 'package:woow_social/core/utils/font_style_constants.dart';
 
 class HomeTabs extends StatelessWidget {
+  final Function(int index) onTabSelected;
   final int selectedIndex;
-  HomeTabs({Key? key, required this.selectedIndex}) : super(key: key);
+  final Function() onSearchPressed;
+  final Function() onLivePressed;
+  HomeTabs(
+      {Key? key,
+      required this.onTabSelected,
+      required this.selectedIndex,
+      required this.onSearchPressed,
+      required this.onLivePressed})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +24,7 @@ class HomeTabs extends StatelessWidget {
       child: Row(
         children: [
           IconButton(
-            onPressed: () {},
+            onPressed: onLivePressed,
             icon: SvgPicture.asset(
               SvgConsstants.live,
             ),
@@ -25,14 +34,14 @@ class HomeTabs extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                _tabItemView(title: StringConstants.following),
-                _tabItemView(title: StringConstants.friends),
-                _tabItemView(title: StringConstants.forYou),
+                _tabItemView(title: StringConstants.following, index: 0),
+                _tabItemView(title: StringConstants.friends, index: 1),
+                _tabItemView(title: StringConstants.forYou, index: 2),
               ],
             ),
           ),
           IconButton(
-            onPressed: () {},
+            onPressed: onSearchPressed,
             icon: SvgPicture.asset(
               SvgConsstants.search,
             ),
@@ -42,29 +51,32 @@ class HomeTabs extends StatelessWidget {
     );
   }
 
-  Widget _tabItemView({required String title}) {
-    return SizedBox(
-      height: 41,
-      child: Stack(
-        alignment: Alignment.center,
-        children: [
-          Text(
-            title,
-            style: FontStyles.fontSemibold(
-              color: Colors.white,
-              fontSize: 16,
+  Widget _tabItemView({required String title, required int index}) {
+    return GestureDetector(
+      onTap: () => onTabSelected(index),
+      child: SizedBox(
+        height: 41,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            Text(
+              title,
+              style: FontStyles.fontSemibold(
+                color: Colors.white,
+                fontSize: 16,
+              ),
             ),
-          ),
-          Positioned(
-            bottom: 0,
-            left: 0,
-            right: 0,
-            child: Container(
-              height: 2,
-              color: Colors.white,
+            Positioned(
+              bottom: 0,
+              left: 0,
+              right: 0,
+              child: Container(
+                height: 2,
+                color: Colors.white,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

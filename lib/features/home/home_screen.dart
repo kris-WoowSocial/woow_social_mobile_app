@@ -14,12 +14,15 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  PageController _pageController = PageController(initialPage: 2);
+  late PageController _pageController;
 
   @override
   void initState() {
     super.initState();
-    _pageController.addListener(_onPageChanged);
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _pageController = PageController(initialPage: 2);
+      _pageController.addListener(_onPageChanged);
+    });
   }
 
   @override
@@ -58,7 +61,18 @@ class _HomeScreenState extends State<HomeScreen> {
           left: 16,
           right: 16,
           top: 50,
-          child: HomeTabs(selectedIndex: _pageController.page?.toInt() ?? 2),
+          child: HomeTabs(
+            onTabSelected: (index) {
+              _pageController.animateToPage(
+                index,
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+              );
+            },
+            selectedIndex: 2,
+            onSearchPressed: () {},
+            onLivePressed: () {},
+          ),
         ),
       ],
     );

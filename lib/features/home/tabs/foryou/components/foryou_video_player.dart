@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:better_player_plus/better_player_plus.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:woow_social/core/constants/color_constants.dart';
 import 'package:woow_social/core/constants/svg_constants.dart';
 import 'package:woow_social/core/utils/font_style_constants.dart';
 
@@ -142,45 +143,90 @@ class _ForyouVideoPlayerViewState extends State<ForyouVideoPlayerView>
             left: 16,
             right: 16,
             child: SizedBox(
+                height: 320,
                 child: Row(
-              children: [
-                Expanded(child: Container()),
-                SizedBox(
-                  width: 40,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconButton(
-                        onPressed: () {
-                          print('Report');
-                        },
-                        icon: SvgPicture.asset(SvgConsstants.report),
+                  children: [
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Row(
+                            children: [
+                              SizedBox(height: 60, width: 60),
+                              SizedBox(width: 12),
+                              Column(
+                                children: [
+                                  Text(
+                                    "Jenny Wilson",
+                                    style: FontStyles.fontBold(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                  Text(
+                                    "Actress & Singer",
+                                    style: FontStyles.fontMedium(
+                                      color: ColorConstants.grey300,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 10),
+                            child: Text(
+                              "Hi everyone, in this video I will sing a song #song #music #love #beauty",
+                              style: FontStyles.fontMedium(
+                                color: Colors.white,
+                                height: 1.5,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 24,
+                            color: Colors.black,
+                          )
+                        ],
                       ),
-                      const SizedBox(height: 10),
-                      _rightActionButtons(
-                        iconPath: SvgConsstants.likeVideoUnselected,
-                        title: '225.9K',
+                    ),
+                    const SizedBox(width: 10),
+                    SizedBox(
+                      width: 40,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          IconButton(
+                            onPressed: () {
+                              print('Report');
+                            },
+                            icon: SvgPicture.asset(SvgConsstants.report),
+                          ),
+                          const SizedBox(height: 10),
+                          _rightActionButtons(
+                            iconPath: SvgConsstants.likeVideoUnselected,
+                            title: '225.9K',
+                          ),
+                          const SizedBox(height: 10),
+                          _rightActionButtons(
+                            iconPath: SvgConsstants.comments,
+                            title: '225.9K',
+                          ),
+                          const SizedBox(height: 10),
+                          _rightActionButtons(
+                            iconPath: SvgConsstants.saveVideo,
+                            title: '225.9K',
+                          ),
+                          const SizedBox(height: 10),
+                          _rightActionButtons(
+                            iconPath: SvgConsstants.share,
+                            title: '225.9K',
+                          ),
+                        ],
                       ),
-                      const SizedBox(height: 10),
-                      _rightActionButtons(
-                        iconPath: SvgConsstants.comments,
-                        title: '225.9K',
-                      ),
-                      const SizedBox(height: 10),
-                      _rightActionButtons(
-                        iconPath: SvgConsstants.saveVideo,
-                        title: '225.9K',
-                      ),
-                      const SizedBox(height: 10),
-                      _rightActionButtons(
-                        iconPath: SvgConsstants.share,
-                        title: '225.9K',
-                      ),
-                    ],
-                  ),
-                )
-              ],
-            )),
+                    )
+                  ],
+                )),
           ),
         ],
       ),

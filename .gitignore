@@ -32,6 +32,26 @@ migrate_working_dir/
 .pub/
 /build/
 
+# Configuration files
+**/google-services.json
+**/GoogleService-Info.plist
+**/key.properties
+**/keys/
+**/*.keystore
+**/*.jks
+**/*.p12
+**/*.key
+**/*.pem
+**/secrets.*
+**/env.*
+**/config.*
+**/app_config.dart
+
+# Environment variables
+.env
+*.env
+!.env.template
+
 # Symbolication related
 app.*.symbols
 
