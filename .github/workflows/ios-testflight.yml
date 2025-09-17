@@ -2,91 +2,92 @@ name: iOS TestFlight Deployment
 
 on:
   push:
-    branches: [ development ]
+    branches: [development]
   workflow_dispatch:
 
 jobs:
   build-and-deploy:
     runs-on: macos-latest
-    
+
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
-      
-    - name: Setup Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        flutter-version: '3.24.0'
-        channel: 'stable'
-        cache: true
-        
-    - name: Install dependencies
-      run: flutter pub get
-      
-    - name: Run tests
-      run: flutter test
-      
-    - name: Setup Xcode
-      uses: maxim-lobanov/setup-xcode@v1
-      with:
-        xcode-version: '16.1'
-        
-    - name: Install CocoaPods
-      run: |
-        cd ios
-        pod install
-        
-    - name: Import Code-Signing Certificates
-      uses: Apple-Actions/import-codesign-certs@v2
-      with:
-        p12-file-base64: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_P12 }}
-        p12-password: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_PASSWORD }}
-        
-    - name: Install Provisioning Profile
-      run: |
-        echo "${{ secrets.IOS_PROVISIONING_PROFILE }}" | base64 --decode > ios_woow_social_app.mobileprovision
-        mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-        UUID=$(grep -A1 -a UUID ios_woow_social_app.mobileprovision | grep string | sed 's/<[^>]*>//g' | xargs)
-        cp ios_woow_social_app.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/$UUID.mobileprovision
-        
-    - name: Build Flutter iOS
-      run: |
-        flutter build ios --release --no-codesign
-        
-    - name: Build and Archive iOS App
-      run: |
-        cd ios
-        xcodebuild -workspace Runner.xcworkspace \
-          -scheme Runner \
-          -configuration Release \
-          -sdk iphoneos \
-          -archivePath $PWD/build/Runner.xcarchive \
-          archive
-          
-    - name: Export IPA
-      run: |
-        cd ios
-        xcodebuild -exportArchive \
-          -archivePath $PWD/build/Runner.xcarchive \
-          -exportOptionsPlist $PWD/ExportOptions.plist \
-          -exportPath $PWD/build
-          
-    - name: Upload to TestFlight
-      uses: Apple-Actions/upload-testflight-build@v1
-      with:
-        app-path: 'ios/build/Runner.ipa'
-        issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
-        api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
-        api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
-        
-    - name: Notify Success
-      if: success()
-      run: |
-        echo "🎉 iOS app successfully uploaded to TestFlight!"
-        echo "Build completed at: $(date)"
-        
-    - name: Notify Failure
-      if: failure()
-      run: |
-        echo "❌ iOS build or upload failed!"
-        echo "Please check the logs for more details."
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.24.0"
+          channel: "stable"
+          cache: true
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Setup Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: "16.1"
+
+      - name: Install CocoaPods
+        run: |
+          cd ios
+          pod install
+
+      - name: Import Code-Signing Certificates
+        uses: Apple-Actions/import-codesign-certs@v2
+        with:
+          p12-file-base64: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_P12 }}
+          p12-password: ${{ secrets.IOS_DISTRIBUTION_CERTIFICATE_PASSWORD }}
+
+      - name: Install Provisioning Profile
+        run: |
+          echo "${{ secrets.IOS_PROVISIONING_PROFILE }}" | base64 --decode > ios_woow_social_app.mobileprovision
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          UUID=$(grep -A1 -a UUID ios_woow_social_app.mobileprovision | grep string | sed 's/<[^>]*>//g' | xargs)
+          cp ios_woow_social_app.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/$UUID.mobileprovision
+
+      - name: Build Flutter iOS
+        run: |
+          flutter build ios --release --no-codesign
+
+      - name: Build and Archive iOS App
+        run: |
+          cd ios
+          xcodebuild -workspace Runner.xcworkspace \
+            -scheme Runner \
+            -configuration Release \
+            -sdk iphoneos \
+            -archivePath $PWD/build/Runner.xcarchive \
+            IPHONEOS_DEPLOYMENT_TARGET=15.0 \
+            archive
+
+      - name: Export IPA
+        run: |
+          cd ios
+          xcodebuild -exportArchive \
+            -archivePath $PWD/build/Runner.xcarchive \
+            -exportOptionsPlist $PWD/ExportOptions.plist \
+            -exportPath $PWD/build
+
+      - name: Upload to TestFlight
+        uses: Apple-Actions/upload-testflight-build@v1
+        with:
+          app-path: "ios/build/Runner.ipa"
+          issuer-id: ${{ secrets.APPSTORE_ISSUER_ID }}
+          api-key-id: ${{ secrets.APPSTORE_KEY_ID }}
+          api-private-key: ${{ secrets.APPSTORE_PRIVATE_KEY }}
+
+      - name: Notify Success
+        if: success()
+        run: |
+          echo "🎉 iOS app successfully uploaded to TestFlight!"
+          echo "Build completed at: $(date)"
+
+      - name: Notify Failure
+        if: failure()
+        run: |
+          echo "❌ iOS build or upload failed!"
+          echo "Please check the logs for more details."
