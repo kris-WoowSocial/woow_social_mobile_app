@@ -20,7 +20,7 @@ class AppLogger {
         lineLength: 50,
         colors: true,
         printEmojis: true,
-        printTime: true,
+        dateTimeFormat: DateTimeFormat.onlyTimeAndSinceStart,
       ),
     );
   }
@@ -28,14 +28,14 @@ class AppLogger {
   /// Initialize the logger
   static Future<void> init() async {
     if (_initialized) return;
-    
+
     // Initialize any logger-specific configurations here
     if (kDebugMode) {
       _logger?.i('Logger initialized in debug mode');
     } else {
       _logger?.i('Logger initialized in release mode');
     }
-    
+
     _initialized = true;
   }
 
@@ -43,7 +43,8 @@ class AppLogger {
   void d(String message, {dynamic error, StackTrace? stackTrace}) {
     if (kDebugMode) {
       _logger?.d(message, error: error, stackTrace: stackTrace);
-      developer.log(message, name: 'DEBUG', error: error, stackTrace: stackTrace);
+      developer.log(message,
+          name: 'DEBUG', error: error, stackTrace: stackTrace);
     }
   }
 
@@ -56,7 +57,8 @@ class AppLogger {
   /// Log a warning message
   void w(String message, {dynamic error, StackTrace? stackTrace}) {
     _logger?.w(message, error: error, stackTrace: stackTrace);
-    developer.log(message, name: 'WARNING', error: error, stackTrace: stackTrace);
+    developer.log(message,
+        name: 'WARNING', error: error, stackTrace: stackTrace);
   }
 
   /// Log an error message
@@ -69,7 +71,8 @@ class AppLogger {
   void v(String message, {dynamic error, StackTrace? stackTrace}) {
     if (kDebugMode) {
       _logger?.v(message, error: error, stackTrace: stackTrace);
-      developer.log(message, name: 'VERBOSE', error: error, stackTrace: stackTrace);
+      developer.log(message,
+          name: 'VERBOSE', error: error, stackTrace: stackTrace);
     }
   }
 }
