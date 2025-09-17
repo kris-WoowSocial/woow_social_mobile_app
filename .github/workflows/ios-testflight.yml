@@ -44,13 +44,14 @@ jobs:
         
     - name: Install Provisioning Profile
       run: |
-        echo "${{ secrets.IOS_PROVISIONING_PROFILE }}" | base64 --decode > ios/ios_woow_social_app.mobileprovision
+        echo "${{ secrets.IOS_PROVISIONING_PROFILE }}" | base64 --decode > ios_woow_social_app.mobileprovision
         mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-        cp ios/ios_woow_social_app.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
+        UUID=$(grep -A1 -a UUID ios_woow_social_app.mobileprovision | grep string | sed 's/<[^>]*>//g' | xargs)
+        cp ios_woow_social_app.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/$UUID.mobileprovision
         
     - name: Build Flutter iOS
       run: |
-        flutter build ios --release --no-codesign
+        flutter build ios --release --no-codesign --target-platform ios-arm64
         
     - name: Build and Archive iOS App
       run: |
@@ -58,7 +59,7 @@ jobs:
         xcodebuild -workspace Runner.xcworkspace \
           -scheme Runner \
           -configuration Release \
-          -destination generic/platform=iOS \
+          -sdk iphoneos \
           -archivePath $PWD/build/Runner.xcarchive \
           archive
           
