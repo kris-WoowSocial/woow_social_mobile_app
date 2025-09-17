@@ -25,12 +25,23 @@ You need to add the following secrets to your GitHub repository:
 - **`IOS_DISTRIBUTION_CERTIFICATE_P12`**: Your iOS Distribution certificate in P12 format (base64 encoded)
 - **`IOS_DISTRIBUTION_CERTIFICATE_PASSWORD`**: Password for the P12 certificate
 
+### 3. Provisioning Profile
+
+- **`IOS_PROVISIONING_PROFILE`**: Your iOS provisioning profile (base64 encoded)
+
 #### How to get code signing certificates:
 
 1. Export your iOS Distribution certificate from Keychain Access
 2. Choose "Personal Information Exchange (.p12)" format
 3. Set a password for the certificate
 4. Convert to base64: `base64 -i certificate.p12 | pbcopy`
+
+#### How to get provisioning profile:
+
+1. Go to [Apple Developer Portal](https://developer.apple.com)
+2. Navigate to Certificates, Identifiers & Profiles → Profiles
+3. Download your App Store provisioning profile for bundle ID `ios.woow.social.app`
+4. Convert to base64: `base64 -i YourProfile.mobileprovision | pbcopy`
 
 ## Workflow Features
 
