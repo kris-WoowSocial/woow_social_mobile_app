@@ -29,12 +29,17 @@ jobs:
       - name: Setup Xcode
         uses: maxim-lobanov/setup-xcode@v1
         with:
-          xcode-version: "16.1"
+          xcode-version: "15.4"
 
       - name: Install CocoaPods
         run: |
           cd ios
           pod install
+
+      - name: List available iOS platforms
+        run: |
+          xcodebuild -showsdks | grep iphoneos
+          xcrun simctl list runtimes
 
       - name: Import Code-Signing Certificates
         uses: Apple-Actions/import-codesign-certs@v2
@@ -51,7 +56,7 @@ jobs:
 
       - name: Build Flutter iOS
         run: |
-          flutter build ios --release --no-codesign
+          flutter build ios --release --no-codesign --target-platform ios-arm64
 
       - name: Build and Archive iOS App
         run: |
@@ -60,6 +65,7 @@ jobs:
             -scheme Runner \
             -configuration Release \
             -sdk iphoneos \
+            -destination generic/platform=iOS \
             -archivePath $PWD/build/Runner.xcarchive \
             IPHONEOS_DEPLOYMENT_TARGET=15.0 \
             archive
