@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_crashlytics/firebase_crashlytics.dart';
+// import 'package:firebase_core/firebase_core.dart';
+// import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -28,17 +28,17 @@ Future<void> main() async {
       ]);
 
       // Initialize Firebase
-      await Firebase.initializeApp();
+      // await Firebase.initializeApp();
 
       // Initialize Crashlytics in release mode
-      if (!kDebugMode) {
-        FlutterError.onError =
-            FirebaseCrashlytics.instance.recordFlutterFatalError;
-        PlatformDispatcher.instance.onError = (error, stack) {
-          FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
-          return true;
-        };
-      }
+      // if (!kDebugMode) {
+      //   FlutterError.onError =
+      //       FirebaseCrashlytics.instance.recordFlutterFatalError;
+      //   PlatformDispatcher.instance.onError = (error, stack) {
+      //     FirebaseCrashlytics.instance.recordError(error, stack, fatal: true);
+      //     return true;
+      //   };
+      // }
 
       // Initialize environment and dependencies
       await _initializeApp();
@@ -54,10 +54,10 @@ Future<void> main() async {
       // Handle any uncaught errors
       logger.e('Uncaught error in main zone',
           error: error, stackTrace: stackTrace);
-      if (!kDebugMode) {
-        FirebaseCrashlytics.instance
-            .recordError(error, stackTrace, fatal: true);
-      }
+      // if (!kDebugMode) {
+      //   FirebaseCrashlytics.instance
+      //       .recordError(error, stackTrace, fatal: true);
+      // }
     },
   );
 }
